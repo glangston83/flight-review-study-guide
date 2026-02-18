@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VFR Study Pro v3.4 | Exam & Print Mode</title>
+    <style>
+        :root { 
+            --primary: #0f172a; 
+            --accent: #2563eb; 
+            --success: #16a34a; 
+            --danger: #dc2626;
+            --bg: #f8fafc; 
+            --card-bg: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+        }
+        
+        body { 
+            font-family: 'Inter', system-ui, -apple-system, sans-serif; 
+            line-height: 1.6; 
+            background-color: var(--bg); 
+            color: var(--text-main);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .app-container { width: 100%; max-width: 800px; }
+
+        .header { 
+            text-align: center; 
+            padding: 40px 20px; 
+            background: var(--primary); 
+            color: white; 
+            border-radius: 16px; 
+            margin-bottom: 24px; 
+            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1); 
+        }
+
+        .header h1 { margin: 0 0 10px 0; font-size: 2.2em; font-weight: 800; letter-spacing: -0.5px; }
+        .header p { margin: 0; color: #94a3b8; font-size: 1.1em; }
+
+        .stats-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--card-bg);
+            padding: 15px 25px;
+            border-radius: 12px;
+            margin-bottom: 24px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+            font-weight: 600;
+        }
+
+        .score-display { color: var(--accent); font-size: 1.1em; }
+        
+        .timer-display {
+            font-family: monospace;
+            font-size: 1.4em;
+            background: #e2e8f0;
+            padding: 4px 12px;
+            border-radius: 8px;
+            color: var(--primary);
+            transition: all 0.3s;
+        }
+
+        .timer-warning {
+            background: #fef2f2;
+            color: var(--danger);
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
+
+        .progress-track {
+            background: #e2e8f0;
+            border-radius: 10px;
+            height: 10px;
+            width: 120px;
+            overflow: hidden;
+            margin: 0 15px;
+        }
+
+        .progress-fill { background: var(--accent); height: 100%; width: 0%; transition: width 0.4s ease-out; }
+
+        .card { 
+            background: var(--card-bg); 
+            padding: 40px; 
+            border-radius: 16px; 
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); 
+            margin-bottom: 24px; 
+            transition: all 0.3s ease;
+        }
+
+        .question { font-weight: 700; font-size: 1.4em; margin-bottom: 25px; display: block; color: var(--primary); }
+
+        .option-item { 
+            margin: 12px 0; 
+            padding: 18px 24px; 
+            border: 2px solid #e2e8f0; 
+            border-radius: 12px; 
+            cursor: pointer; 
+            transition: all 0.2s; 
+            font-weight: 500;
+            font-size: 1.1em;
+            background: #fff;
+        }
+
+        .option-item:hover { border-color: var(--accent); background: #eff6ff; transform: translateY(-1px); }
+        .option-item.selected { border-color: var(--accent); background: #eff6ff; box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2); }
+        .option-item.correct-ans { border-color: var(--success) !important; background: #f0fdf4 !important; color: #166534; pointer-events: none; }
+        .option-item.wrong-ans { border-color: var(--danger) !important; background: #fef2f2 !important; color: #991b1b; pointer-events: none; }
+
+        .btn { 
+            background: var(--accent); 
+            color: white; 
+            border: none; 
+            padding: 16px 32px; 
+            border-radius: 12px; 
+            cursor: pointer; 
+            font-weight: 700; 
+            font-size: 1.1em; 
+            width: 100%;
+            transition: all 0.2s; 
+            margin-top: 10px;
+        }
+
+        .btn:hover { background: #1d4ed8; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(37,99,235,0.3); }
+        .btn:disabled { background: #94a3b8; cursor: not-allowed; transform: none; box-shadow: none; }
+        
+        .btn-success { background: var(--success); }
+        .btn-success:hover { background: #15803d; box-shadow: 0 4px 12px rgba(22,163,74,0.3); }
+
+        .feedback-box {
+            margin-top: 24px;
+            padding: 20px;
+            border-radius: 12px;
+            display: none;
+            animation: fadeIn 0.3s ease-in;
+        }
+
+        .feedback-box h4 { margin: 0 0 10px 0; font-size: 1.2em; }
+        .feedback-box p { margin: 0 0 10px 0; }
+        .ref-tag { display: inline-block; padding: 4px 10px; background: rgba(0,0,0,0.05); border-radius: 6px; font-size: 0.85em; font-weight: 700; color: var(--text-muted); }
+
+        .review-list { list-style: none; padding: 0; }
+        .review-list li { background: #fffbeb; border-left: 4px solid #f59e0b; padding: 15px; margin-bottom: 10px; border-radius: 0 8px 8px 0; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* PRINT STYLES */
+        @media print {
+            body { background: white; padding: 0; color: black; }
+            .header, #quiz-ui, .btn { display: none !important; }
+            .app-container { max-width: 100%; }
+            .card { box-shadow: none; padding: 0; margin: 0; }
+            .review-list li { background: white; border-left: 2px solid black; border-bottom: 1px solid #ccc; page-break-inside: avoid; }
+            #end-title::after { content: " - Pilot Study Guide"; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="app-container">
+        <div class="header">
+            <h1>VFR Study Pro v3.4</h1>
+            <p>Ultimate Exam & Print Mode</p>
+        </div>
+
+        <div id="quiz-ui">
+            <div class="stats-bar">
+                <span id="q-counter">Q 1/X</span>
+                <div class="progress-track"><div class="progress-fill" id="p-bar"></div></div>
+                <div class="timer-display" id="timer-display">10:00</div>
+                <span class="score-display">Score: <span id="score-val">0</span></span>
+            </div>
+
+            <div class="card" id="q-card">
+                <span class="question" id="q-text">Loading...</span>
+                <div id="options-container"></div>
+                
+                <div id="feedback" class="feedback-box">
+                    <h4 id="fb-title"></h4>
+                    <p id="fb-text"></p>
+                    <span class="ref-tag" id="fb-ref"></span>
+                </div>
+            </div>
+
+            <button id="action-btn" class="btn" onclick="handleAction()" disabled>Select an Answer</button>
+        </div>
+
+        <div id="results-ui" class="card" style="display: none; text-align: center;">
+            <h2 id="end-title" style="font-size: 2.5em; margin-bottom: 10px; color: var(--primary);">Exam Complete</h2>
+            <p style="font-size: 1.2em; color: var(--text-muted);">Your Final Score: <strong id="final-score" style="color: var(--accent);"></strong></p>
+            
+            <div id="missed-questions" style="text-align: left; margin-top: 30px;">
+                <h3 style="border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">Study Guide (Items to Review)</h3>
+                <ul class="review-list" id="review-ul"></ul>
+            </div>
+            
+            <div style="display: flex; gap: 15px; margin-top: 30px;">
+                <button class="btn" onclick="location.reload()">Start New Session</button>
+                <button class="btn btn-success" onclick="window.print()" id="print-btn" style="display: none;">🖨️ Print Study Guide</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let quizData = [
+            {
+                q: "To act as Pilot in Command, what three specific items must you have in your physical possession or readily accessible in the aircraft?",
+                options: ["Pilot Certificate, Medical Certificate, Logbook", "Pilot Certificate, Medical Certificate (or BasicMed), Government-issued Photo ID", "Pilot Certificate, Government-issued Photo ID, Flight Review Endorsement"],
+                answer: "Pilot Certificate, Medical Certificate (or BasicMed), Government-issued Photo ID",
+                explanation: "You must hold your pilot certificate, a valid medical (or BasicMed qualifications), and a government-issued photo ID.",
+                ref: "14 CFR 61.3"
+            },
+            {
+                q: "You are planning a VFR day flight. What is the minimum fuel reserve required by the FAA?",
+                options: ["Enough to fly to the destination, plus 20 minutes at normal cruise speed", "Enough to fly to the destination, plus 30 minutes at normal cruise speed", "Enough to fly to the destination, plus 45 minutes at normal cruise speed"],
+                answer: "Enough to fly to the destination, plus 30 minutes at normal cruise speed",
+                explanation: "Day VFR requires enough fuel to fly to the first point of intended landing, plus 30 minutes at normal cruising speed.",
+                ref: "14 CFR 91.151"
+            },
+            {
+                q: "Which aircraft has the right-of-way over all other engine-driven aircraft?",
+                options: ["An airplane on final approach", "An airship", "A glider"],
+                answer: "A glider",
+                explanation: "A glider has the right-of-way over an airship, airplane, or rotorcraft.",
+                ref: "14 CFR 91.113"
+            },
+            {
+                q: "Unless otherwise authorized, what is the maximum indicated airspeed permitted below 10,000 feet MSL?",
+                options: ["200 knots", "250 knots", "Mach 1"],
+                answer: "250 knots",
+                explanation: "The general speed limit below 10,000' MSL is 250 knots. (200 knots applies specifically under Class B or near Class C/D).",
+                ref: "14 CFR 91.117"
+            },
+            {
+                q: "You are flying a magnetic heading of 180° at a VFR cruising altitude above 3,000' AGL. Which altitude is legal?",
+                options: ["4,500 feet MSL", "5,500 feet MSL", "6,000 feet MSL"],
+                answer: "4,500 feet MSL",
+                explanation: "For headings 180°-359° (Westbound), the rule is Even Thousands + 500 feet (e.g., 4,500, 6,500).",
+                ref: "14 CFR 91.159"
+            },
+            {
+                q: "Under VFR in Class E airspace below 10,000 feet MSL, what are the standard minimum visibility and cloud clearance requirements?",
+                options: ["1 SM visibility; Clear of clouds", "3 SM visibility; 500' below, 1,000' above, 2,000' horizontal", "5 SM visibility; 1,000' below, 1,000' above, 1 SM horizontal"],
+                answer: "3 SM visibility; 500' below, 1,000' above, 2,000' horizontal",
+                explanation: "This is the standard '3-152' rule for controlled airspace below 10,000' MSL.",
+                ref: "14 CFR 91.155"
+            },
+            {
+                q: "How frequently must an aircraft's transponder be tested and inspected to operate in controlled airspace?",
+                options: ["Every 12 calendar months", "Every 24 calendar months", "During every Annual inspection"],
+                answer: "Every 24 calendar months",
+                explanation: "No person may use an ATC transponder unless it has been tested and inspected within the preceding 24 calendar months.",
+                ref: "14 CFR 91.413"
+            }
+        ];
+
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+
+        let currentQ = 0;
+        let score = 0;
+        let selectedAnswer = null;
+        let isAnswered = false;
+        let missedQuestions = [];
+        
+        let timeRemaining = 600; 
+        let timerInterval;
+
+        const elements = {
+            qCounter: document.getElementById('q-counter'),
+            pBar: document.getElementById('p-bar'),
+            scoreVal: document.getElementById('score-val'),
+            timerDisplay: document.getElementById('timer-display'),
+            qText: document.getElementById('q-text'),
+            optionsContainer: document.getElementById('options-container'),
+            actionBtn: document.getElementById('action-btn'),
+            feedback: document.getElementById('feedback'),
+            fbTitle: document.getElementById('fb-title'),
+            fbText: document.getElementById('fb-text'),
+            fbRef: document.getElementById('fb-ref'),
+            quizUI: document.getElementById('quiz-ui'),
+            resultsUI: document.getElementById('results-ui'),
+            endTitle: document.getElementById('end-title'),
+            finalScore: document.getElementById('final-score'),
+            reviewUl: document.getElementById('review-ul'),
+            missedDiv: document.getElementById('missed-questions'),
+            printBtn: document.getElementById('print-btn')
+        };
+
+        function startTimer() {
+            timerInterval = setInterval(() => {
+                timeRemaining--;
+                let minutes = Math.floor(timeRemaining / 60);
+                let seconds = timeRemaining % 60;
+                
+                elements.timerDisplay.innerText = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+
+                if (timeRemaining <= 60) {
+                    elements.timerDisplay.classList.add('timer-warning');
+                }
+
+                if (timeRemaining <= 0) {
+                    clearInterval(timerInterval);
+                    elements.timerDisplay.innerText = "0:00";
+                    forceEndExam();
+                }
+            }, 1000);
+        }
+
+        function forceEndExam() {
+            elements.endTitle.innerText = "Time's Up!";
+            elements.endTitle.style.color = "var(--danger)";
+            
+            for(let i = currentQ; i < quizData.length; i++) {
+                missedQuestions.push(quizData[i]);
+            }
+            showResults();
+        }
+
+        function updateProgress() {
+            elements.qCounter.innerText = `Q ${currentQ + 1}/${quizData.length}`;
+            elements.pBar.style.width = `${((currentQ) / quizData.length) * 100}%`;
+            elements.scoreVal.innerText = score;
+        }
+
+        function loadQuestion() {
+            isAnswered = false;
+            selectedAnswer = null;
+            const q = quizData[currentQ];
+            
+            updateProgress();
+            elements.qText.innerText = q.q;
+            elements.feedback.style.display = 'none';
+            elements.actionBtn.innerText = "Check Answer";
+            elements.actionBtn.disabled = true;
+            elements.optionsContainer.innerHTML = '';
+
+            let shuffledOptions = [...q.options];
+            shuffleArray(shuffledOptions);
+
+            shuffledOptions.forEach((opt) => {
+                const div = document.createElement('div');
+                div.className = 'option-item';
+                div.innerText = opt;
+                div.onclick = () => selectOption(opt, div);
+                elements.optionsContainer.appendChild(div);
+            });
+
+            if (currentQ === 0 && !timerInterval) {
+                startTimer();
+            }
+        }
+
+        function selectOption(optText, element) {
+            if (isAnswered) return; 
+            
+            selectedAnswer = optText;
+            Array.from(elements.optionsContainer.children).forEach(child => child.classList.remove('selected'));
+            element.classList.add('selected');
+            
+            elements.actionBtn.disabled = false;
+            elements.actionBtn.innerText = "Submit Answer";
+        }
+
+        function handleAction() {
+            if (!isAnswered) {
+                checkAnswer();
+            } else {
+                nextQuestion();
+            }
+        }
+
+        function checkAnswer() {
+            isAnswered = true;
+            const q = quizData[currentQ];
+            const options = elements.optionsContainer.children;
+            
+            elements.feedback.style.display = 'block';
+            elements.fbRef.innerText = `Reference: ${q.ref}`;
+
+            Array.from(options).forEach(optDiv => {
+                if (optDiv.innerText === q.answer) {
+                    optDiv.classList.add('correct-ans');
+                } else if (optDiv.innerText === selectedAnswer && selectedAnswer !== q.answer) {
+                    optDiv.classList.add('wrong-ans');
+                }
+            });
+
+            if (selectedAnswer === q.answer) {
+                score++;
+                elements.scoreVal.innerText = score;
+                elements.feedback.style.backgroundColor = '#f0fdf4';
+                elements.fbTitle.innerText = "Correct!";
+                elements.fbTitle.style.color = 'var(--success)';
+            } else {
+                elements.feedback.style.backgroundColor = '#fef2f2';
+                elements.fbTitle.innerText = "Incorrect";
+                elements.fbTitle.style.color = 'var(--danger)';
+                missedQuestions.push(q);
+            }
+
+            elements.fbText.innerText = q.explanation;
+            elements.actionBtn.innerText = currentQ === quizData.length - 1 ? "View Results" : "Next Question →";
+        }
+
+        function nextQuestion() {
+            currentQ++;
+            if (currentQ < quizData.length) {
+                loadQuestion();
+            } else {
+                showResults();
+            }
+        }
+
+        function showResults() {
+            clearInterval(timerInterval);
+            elements.quizUI.style.display = 'none';
+            elements.resultsUI.style.display = 'block';
+            
+            const percentage = Math.round((score / quizData.length) * 100);
+            elements.finalScore.innerText = `${score} / ${quizData.length} (${percentage}%)`;
+
+            if (missedQuestions.length === 0) {
+                elements.missedDiv.innerHTML = "<h3 style='color: var(--success);'>Flawless!</h3><p>You have an excellent grasp of VFR regulations.</p>";
+            } else {
+                elements.printBtn.style.display = 'block'; // Show print button only if there are missed questions
+                missedQuestions.forEach(q => {
+                    const li = document.createElement('li');
+                    li.innerHTML = `<strong>Review:</strong> ${q.ref}<br><em>${q.explanation}</em>`;
+                    elements.reviewUl.appendChild(li);
+                });
+            }
+        }
+
+        shuffleArray(quizData);
+        loadQuestion();
+    </script>
+</body>
+</html>
