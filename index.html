@@ -157,11 +157,14 @@
         .review-list { list-style: none; padding: 0; }
         .review-list li { background: #fffbeb; border-left: 4px solid #f59e0b; padding: 15px; margin-bottom: 10px; border-radius: 0 8px 8px 0; }
 
+        /* Custom link hover effect */
+        a:hover { color: #1d4ed8; text-decoration: underline !important; }
+
         @media print {
             body { background: white; padding: 0; color: black; }
-            .header, #quiz-ui, .btn { display: none !important; }
+            .header, #quiz-ui, .btn, .no-print { display: none !important; }
             .app-container { max-width: 100%; }
-            .card { box-shadow: none; padding: 0; margin: 0; }
+            .card { box-shadow: none; padding: 0; margin: 0; border: none; }
             .review-list li { background: white; border-left: 2px solid black; border-bottom: 1px solid #ccc; page-break-inside: avoid; }
             #end-title::after { content: " - Private Pilot Study Guide"; }
         }
@@ -206,11 +209,39 @@
                 <ul class="review-list" id="review-ul"></ul>
             </div>
             
-            <div style="display: flex; gap: 15px; margin-top: 30px;">
+            <div style="display: flex; gap: 15px; margin-top: 30px;" class="no-print">
                 <button class="btn" onclick="location.reload()">Start New Session</button>
                 <button class="btn btn-success" onclick="window.print()" id="print-btn" style="display: none;">🖨️ Print Study Guide</button>
             </div>
         </div>
+
+        <div class="card no-print" style="margin-top: 30px; border-top: 4px solid var(--accent); text-align: center;">
+            <h3 style="margin-top: 0; color: var(--primary);">Recommended Pilot Gear & Resources</h3>
+            <p style="font-size: 0.9em; color: var(--text-muted); margin-bottom: 20px;">Gear up for your flight review or checkride with these essentials.</p>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
+                <a href="YOUR_AMAZON_LINK_HERE" target="_blank" style="text-decoration: none; padding: 15px; border: 1px solid #e2e8f0; border-radius: 8px; color: var(--primary); font-weight: bold; transition: 0.2s;">
+                    📚 2026 FAR/AIM Book
+                </a>
+                <a href="YOUR_LIGHTSPEED_LINK_HERE" target="_blank" style="text-decoration: none; padding: 15px; border: 1px solid #e2e8f0; border-radius: 8px; color: var(--primary); font-weight: bold; transition: 0.2s;">
+                    🎧 Lightspeed Aviation Headsets
+                </a>
+                <a href="YOUR_GROUND_SCHOOL_LINK_HERE" target="_blank" style="text-decoration: none; padding: 15px; border: 1px solid #e2e8f0; border-radius: 8px; color: var(--primary); font-weight: bold; transition: 0.2s;">
+                    ✈️ Online Ground School
+                </a>
+                <a href="YOUR_KNEEBOARD_LINK_HERE" target="_blank" style="text-decoration: none; padding: 15px; border: 1px solid #e2e8f0; border-radius: 8px; color: var(--primary); font-weight: bold; transition: 0.2s;">
+                    📱 iPad Pilot Kneeboards
+                </a>
+            </div>
+            <p style="font-size: 0.75em; color: #94a3b8; margin-top: 20px;">*As an affiliate, we may earn a small commission from qualifying purchases at no extra cost to you.</p>
+        </div>
+
+        <div class="no-print" style="text-align: center; margin-top: 40px; padding-bottom: 20px;">
+            <p style="color: var(--text-muted); font-size: 0.9em;">
+                Brought to you by <a href="https://yankeealphasoftware.com" target="_blank" style="color: var(--accent); text-decoration: none; font-weight: 700; transition: color 0.2s;">Yankee Alpha Software</a>
+            </p>
+        </div>
+
     </div>
 
     <script>
@@ -359,7 +390,7 @@
                 q: "When are passengers required to have their seatbelts fastened?",
                 options: ["At all times during the flight", "During taxi, takeoff, and landing", "Only during turbulence"],
                 answer: "During taxi, takeoff, and landing",
-                explanation: "Passengers must be briefed and have their seatbelts fastened during surface movement, takeoff, and landing. (Crewmembers must keep them on at all times while at their stations).",
+                explanation: "Passengers must be briefed and have their seatbelts fastened during surface movement, takeoff, and landing.",
                 ref: "14 CFR 91.107"
             },
             {
@@ -422,7 +453,7 @@
                 q: "What action is required prior to entering Class B airspace?",
                 options: ["Establish two-way radio communications", "Receive an explicit ATC clearance to enter", "Squawk VFR 1200"],
                 answer: "Receive an explicit ATC clearance to enter",
-                explanation: "Unlike Class C or D (which only require establishing two-way comms), Class B requires an explicit clearance (e.g., 'Cleared into the Class Bravo airspace').",
+                explanation: "Unlike Class C or D (which only require establishing two-way comms), Class B requires an explicit clearance.",
                 ref: "14 CFR 91.131"
             },
             {
@@ -443,7 +474,7 @@
                 q: "To avoid wake turbulence when landing behind a large aircraft, the pilot should:",
                 options: ["Fly below the large aircraft's flight path and land before its touchdown point", "Fly above the large aircraft's flight path and land beyond its touchdown point", "Land precisely on the large aircraft's touchdown point"],
                 answer: "Fly above the large aircraft's flight path and land beyond its touchdown point",
-                explanation: "Wake turbulence sinks, so staying above the heavy aircraft's path and landing beyond where it touched down (and stopped producing lift) avoids the vortices.",
+                explanation: "Wake turbulence sinks, so staying above the heavy aircraft's path and landing beyond where it touched down avoids the vortices.",
                 ref: "AIM 7-3-6"
             },
             {
@@ -457,7 +488,7 @@
                 q: "In what conditions is advection fog most likely to form?",
                 options: ["Calm, clear nights inland", "Warm, moist air moving over a colder surface, typically requiring some wind", "When rain falls through a temperature inversion"],
                 answer: "Warm, moist air moving over a colder surface, typically requiring some wind",
-                explanation: "Advection fog forms when warm, moist air is pushed over a cold surface (like coastal air moving over cold water or land). It requires wind to move the air mass.",
+                explanation: "Advection fog forms when warm, moist air is pushed over a cold surface. It requires wind to move the air mass.",
                 ref: "FAA-H-8083-25"
             },
             {
@@ -485,7 +516,7 @@
                 q: "What is the load factor in a level, 60-degree banked turn?",
                 options: ["1.5 Gs", "2.0 Gs", "3.0 Gs"],
                 answer: "2.0 Gs",
-                explanation: "In a 60-degree level turn, the load factor (G-force) doubles, meaning you feel twice your normal weight, and stall speed increases significantly.",
+                explanation: "In a 60-degree level turn, the load factor doubles, meaning you feel twice your normal weight, and stall speed increases significantly.",
                 ref: "FAA-H-8083-25"
             },
             {
@@ -545,7 +576,7 @@
                 ref: "FAA Risk Management Handbook"
             },
             {
-                q: "How often are METARs (Aviation Routine Weather Reports) normally issued?",
+                q: "How often are METARs normally issued?",
                 options: ["Every 12 hours", "Every 6 hours", "Hourly"],
                 answer: "Hourly",
                 explanation: "METARs are routine surface observations typically issued on an hourly basis, usually between 50 minutes past the hour and the top of the hour.",
@@ -580,7 +611,6 @@
         let isAnswered = false;
         let missedQuestions = [];
         
-        // 60 Minutes = 3600 seconds
         let timeRemaining = 3600; 
         let timerInterval;
 
@@ -613,7 +643,7 @@
                 
                 elements.timerDisplay.innerText = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
 
-                if (timeRemaining <= 300) { // Warning at 5 minutes
+                if (timeRemaining <= 300) {
                     elements.timerDisplay.classList.add('timer-warning');
                 }
 
