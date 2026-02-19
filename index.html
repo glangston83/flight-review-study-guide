@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Private Pilot Study Guide</title>
+    <title>Pilot Proficiency Pro</title>
 
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="PPL Study">
+    <meta name="apple-mobile-web-app-title" content="Pilot Pro">
     <meta name="theme-color" content="#0f172a">
 
-    <link rel="apple-touch-icon" href="https://via.placeholder.com/192x192/2563eb/ffffff?text=PPL">
-    <link rel="icon" type="image/png" sizes="192x192" href="https://via.placeholder.com/192x192/2563eb/ffffff?text=PPL">
+    <link rel="apple-touch-icon" href="https://via.placeholder.com/192x192/2563eb/ffffff?text=FLY">
+    <link rel="icon" type="image/png" sizes="192x192" href="https://via.placeholder.com/192x192/2563eb/ffffff?text=FLY">
 
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7983667074248581" crossorigin="anonymous"></script>
 
@@ -42,7 +42,7 @@
 
         .header { 
             text-align: center; 
-            padding: 40px 20px; 
+            padding: 30px 20px; 
             background: var(--primary); 
             color: white; 
             border-radius: 16px; 
@@ -50,8 +50,31 @@
             box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1); 
         }
 
-        .header h1 { margin: 0 0 10px 0; font-size: 2.2em; font-weight: 800; letter-spacing: -0.5px; }
-        .header p { margin: 0; color: #94a3b8; font-size: 1.1em; }
+        .header h1 { margin: 0 0 5px 0; font-size: 2.0em; font-weight: 800; letter-spacing: -0.5px; }
+        .header p { margin: 0 0 20px 0; color: #94a3b8; font-size: 1.0em; }
+
+        /* Mode Switcher Buttons */
+        .mode-switcher {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+
+        .mode-btn {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: all 0.2s;
+        }
+
+        .mode-btn:hover { background: rgba(255,255,255,0.2); }
+        .mode-btn.active { background: var(--accent); border-color: var(--accent); font-weight: bold; box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
 
         .stats-bar {
             display: flex;
@@ -89,33 +112,35 @@
             background: #e2e8f0;
             border-radius: 10px;
             height: 10px;
-            width: 120px;
+            width: 100px;
             overflow: hidden;
-            margin: 0 15px;
+            margin: 0 10px;
+            display: none; /* Hidden on very small screens, shown via media query */
         }
+        @media (min-width: 400px) { .progress-track { display: block; } }
 
         .progress-fill { background: var(--accent); height: 100%; width: 0%; transition: width 0.4s ease-out; }
 
         .card { 
             background: var(--card-bg); 
-            padding: 40px; 
+            padding: 30px; 
             border-radius: 16px; 
             box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); 
             margin-bottom: 24px; 
             transition: all 0.3s ease;
         }
 
-        .question { font-weight: 700; font-size: 1.4em; margin-bottom: 25px; display: block; color: var(--primary); }
+        .question { font-weight: 700; font-size: 1.3em; margin-bottom: 25px; display: block; color: var(--primary); }
 
         .option-item { 
             margin: 12px 0; 
-            padding: 18px 24px; 
+            padding: 16px 20px; 
             border: 2px solid #e2e8f0; 
             border-radius: 12px; 
             cursor: pointer; 
             transition: all 0.2s; 
             font-weight: 500;
-            font-size: 1.1em;
+            font-size: 1.05em;
             background: #fff;
         }
 
@@ -164,11 +189,11 @@
 
         @media print {
             body { background: white; padding: 0; color: black; }
-            .header, #quiz-ui, .btn, .no-print { display: none !important; }
+            .header, #quiz-ui, .btn, .no-print, .mode-switcher { display: none !important; }
             .app-container { max-width: 100%; }
             .card { box-shadow: none; padding: 0; margin: 0; border: none; }
             .review-list li { background: white; border-left: 2px solid black; border-bottom: 1px solid #ccc; page-break-inside: avoid; }
-            #end-title::after { content: " - Private Pilot Study Guide"; }
+            #end-title::after { content: " - Study Guide Result"; }
         }
     </style>
 </head>
@@ -176,8 +201,13 @@
 
     <div class="app-container">
         <div class="header">
-            <h1>Private Pilot Study Guide</h1>
-            <p>Comprehensive Exam & Print Mode</p>
+            <h1 id="app-title">Pilot Proficiency Pro</h1>
+            <p>Interactive Aviation Study Guide</p>
+            
+            <div class="mode-switcher no-print">
+                <button class="mode-btn active" onclick="switchMode('ppl')">Private Pilot</button>
+                <button class="mode-btn" onclick="switchMode('tw')">Tailwheel & UPRT</button>
+            </div>
         </div>
 
         <div id="quiz-ui">
@@ -211,7 +241,7 @@
                 <ul class="review-list" id="review-ul"></ul>
             </div>
             
-            <div style="display: flex; gap: 15px; margin-top: 30px;" class="no-print">
+            <div style="display: flex; gap: 15px; margin-top: 30px; justify-content: center;" class="no-print">
                 <button class="btn" onclick="location.reload()">Start New Session</button>
                 <button class="btn btn-success" onclick="window.print()" id="print-btn" style="display: none;">🖨️ Print Study Guide</button>
             </div>
@@ -219,7 +249,7 @@
 
         <div class="card no-print" style="margin-top: 30px; border-top: 4px solid var(--accent); text-align: center;">
             <h3 style="margin-top: 0; color: var(--primary);">Recommended Pilot Gear & Resources</h3>
-            <p style="font-size: 0.9em; color: var(--text-muted); margin-bottom: 20px;">Gear up for your flight review or checkride with these essentials.</p>
+            <p style="font-size: 0.9em; color: var(--text-muted); margin-bottom: 20px;">Gear up for your training with these essentials.</p>
             
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
                 <a href="https://amzn.to/3ZDvP69" target="_blank" style="text-decoration: none; padding: 15px; border: 1px solid #e2e8f0; border-radius: 8px; color: var(--primary); font-weight: bold; transition: 0.2s;">
@@ -244,7 +274,8 @@
     </div>
 
     <script>
-        let quizData = [
+        // --- QUESTION BANK 1: PRIVATE PILOT ---
+        const pplQuestions = [
             {
                 q: "To act as Pilot in Command, what specific items must you have in your physical possession or readily accessible in the aircraft?",
                 options: ["Pilot Certificate, Medical Certificate, Logbook", "Pilot Certificate, Medical Certificate (or BasicMed), Government-issued Photo ID", "Pilot Certificate, Government-issued Photo ID, Flight Review Endorsement"],
@@ -597,23 +628,127 @@
             }
         ];
 
-        function shuffleArray(array) {
-            for (let i = array.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [array[i], array[j]] = [array[j], array[i]];
+        // --- QUESTION BANK 2: TAILWHEEL & UPRT ---
+        const twQuestions = [
+            {
+                q: "What is the primary design characteristic of tailwheel airplanes that makes them less forgiving of pilot error on the ground?",
+                options: ["The Center of Gravity (CG) is located behind the main landing gear", "The main landing gear is narrower than tricycle gear airplanes", "The rudder is less effective at low speeds"],
+                answer: "The Center of Gravity (CG) is located behind the main landing gear",
+                explanation: "Because the CG is behind the main wheels, inertia creates a tendency for the tail to swing forward (ground loop) if directional control is not maintained.",
+                ref: "Tailwheel Training Doc"
+            },
+            {
+                q: "According to the Upset Recovery Template, what is the immediate action after disconnecting the autopilot?",
+                options: ["Apply full power", "Apply forward column/stick pressure to unload the airplane", "Roll wings level"],
+                answer: "Apply forward column/stick pressure to unload the airplane",
+                explanation: "Unloading the wing (reducing Angle of Attack) is critical before rolling to prevent a stall or structural overstress.",
+                ref: "UPRT Doc"
+            },
+            {
+                q: "What is a common mistake pilots make during the rollout in a tailwheel airplane?",
+                options: ["Holding the stick back too firmly", "Failure to hold the stick back (elevator up)", "Using too much aileron into the wind"],
+                answer: "Failure to hold the stick back (elevator up)",
+                explanation: "In a 3-point attitude, the stick must be held full back to keep the tailwheel planted and steerable.",
+                ref: "Tailwheel Lesson 2"
+            },
+            {
+                q: "When calculating crosswind components using the graph, what two values do you need?",
+                options: ["Wind velocity and runway length", "The angle between the wind and runway, and the wind velocity", "The wind direction and magnetic variation"],
+                answer: "The angle between the wind and runway, and the wind velocity",
+                explanation: "You intersect the radial line (angle) with the arc (velocity) to read the headwind and crosswind components.",
+                ref: "Crosswind Graph"
+            },
+            {
+                q: "What is the primary goal of Upset Prevention and Recovery Training (UPRT) compared to aerobatics?",
+                options: ["To teach precision maneuvering for competition", "To overcome startle and stress to prevent Loss of Control In-flight (LOC-I)", "To learn how to perform spins for fun"],
+                answer: "To overcome startle and stress to prevent Loss of Control In-flight (LOC-I)",
+                explanation: "Aerobatics is intentional; UPRT focuses on recovering from unintentional and unexpected events.",
+                ref: "UPRT Doc"
+            },
+            {
+                q: "In a tailwheel airplane, what causes a 'ground loop'?",
+                options: ["The gyroscopic precession of the propeller", "Inertia acting on the CG located behind the main wheels", "Excessive braking on the inside wheel"],
+                answer: "Inertia acting on the CG located behind the main wheels",
+                explanation: "If the aircraft swerves, the CG momentum continues forward, attempting to overtake the main wheels.",
+                ref: "Tailwheel Lesson 1"
+            },
+            {
+                q: "What is the correct recovery procedure for a wheel landing bounce?",
+                options: ["Force the aircraft back onto the runway", "Hold attitude and add power (or go-around)", "Retract flaps immediately"],
+                answer: "Hold attitude and add power (or go-around)",
+                explanation: "Forcing the nose down will cause a prop strike or worse bounce. Stabilize with power and attitude, or go around.",
+                ref: "Tailwheel Lesson 3"
+            },
+            {
+                q: "According to the Upset Recovery Template, why do we 'unload' (push forward) before rolling upright?",
+                options: ["To increase airspeed", "To reduce the G-load and Angle of Attack to prevent stalling during the roll", "To gain altitude"],
+                answer: "To reduce the G-load and Angle of Attack to prevent stalling during the roll",
+                explanation: "Rolling while loaded (high G) increases the stall speed and can lead to an accelerated stall.",
+                ref: "UPRT Doc"
+            },
+            {
+                q: "What pilot action is required to legally act as PIC of a tailwheel airplane?",
+                options: ["A logbook endorsement from an authorized instructor", "Passing a new FAA written exam", "10 hours of solo flight time"],
+                answer: "A logbook endorsement from an authorized instructor",
+                explanation: "14 CFR 61.31(i) requires flight training and a one-time logbook endorsement.",
+                ref: "14 CFR 61.31"
+            },
+            {
+                q: "When taxiing a tailwheel airplane with a strong quartering tailwind from the left, how should the controls be positioned?",
+                options: ["Stick back, aileron left", "Stick forward (dive away), aileron right", "Stick neutral, aileron neutral"],
+                answer: "Stick forward (dive away), aileron right",
+                explanation: "Dive away from tailwinds. Stick forward to keep the tail from lifting, aileron right (down on the left) to keep the wind from lifting the wing.",
+                ref: "Tailwheel Handling"
+            },
+            {
+                q: "What are the three phases of a spin?",
+                options: ["Entry, Incipient, Developed", "Stall, Drop, Rotation", "Incipient, Rotation, Recovery"],
+                answer: "Entry, Incipient, Developed",
+                explanation: "The standard phases of a spin are Entry, Incipient (just starting), and Fully Developed.",
+                ref: "CFI Spin Training"
+            },
+            {
+                q: "A 'spiral dive' is distinct from a spin because:",
+                options: ["The airspeed is low and constant in a spiral", "The airspeed is increasing rapidly in a spiral", "The wings are level in a spiral"],
+                answer: "The airspeed is increasing rapidly in a spiral",
+                explanation: "A spin is a stall (low airspeed). A spiral is a high-speed descent where the wing is flying but banked steeply.",
+                ref: "CFI Spin Training"
+            },
+            {
+                q: "During a wheel landing, what control input is typically used at the moment of touchdown to 'stick' the landing?",
+                options: ["Full back pressure", "Slight forward pressure", "Neutral pressure"],
+                answer: "Slight forward pressure",
+                explanation: "Slight forward pressure reduces the angle of attack, preventing the aircraft from ballooning back into the air.",
+                ref: "Tailwheel Lesson 2"
+            },
+            {
+                q: "What is a major risk factor mentioned in the UPRT curriculum?",
+                options: ["Flying at night", "Startle response and panic", "Engine failure"],
+                answer: "Startle response and panic",
+                explanation: "UPRT specifically trains to mitigate the 'startle' factor which can lead to freezing or incorrect inputs.",
+                ref: "UPRT Doc"
+            },
+            {
+                q: "Which instrument is primary for determining if you are in a spin versus a spiral?",
+                options: ["Altimeter", "Airspeed Indicator", "Turn Coordinator / Turn & Slip"],
+                answer: "Airspeed Indicator",
+                explanation: "In a spin, airspeed is low (stalled). In a spiral, airspeed is increasing rapidly.",
+                ref: "CFI Spin Training"
             }
-        }
+        ];
 
+        // --- GAME LOGIC ---
+        let currentQuiz = pplQuestions; // Default
         let currentQ = 0;
         let score = 0;
         let selectedAnswer = null;
         let isAnswered = false;
         let missedQuestions = [];
-        
-        let timeRemaining = 3600; 
         let timerInterval;
+        let timeRemaining = 3600;
 
         const elements = {
+            title: document.getElementById('app-title'),
             qCounter: document.getElementById('q-counter'),
             pBar: document.getElementById('p-bar'),
             scoreVal: document.getElementById('score-val'),
@@ -630,11 +765,51 @@
             endTitle: document.getElementById('end-title'),
             finalScore: document.getElementById('final-score'),
             reviewUl: document.getElementById('review-ul'),
-            missedDiv: document.getElementById('missed-questions'),
-            printBtn: document.getElementById('print-btn')
+            printBtn: document.getElementById('print-btn'),
+            modeBtns: document.querySelectorAll('.mode-btn')
         };
 
+        function switchMode(mode) {
+            // Update buttons
+            elements.modeBtns.forEach(btn => btn.classList.remove('active'));
+            if (mode === 'ppl') {
+                elements.modeBtns[0].classList.add('active');
+                currentQuiz = pplQuestions;
+                elements.title.innerText = "Private Pilot Study Guide";
+            } else {
+                elements.modeBtns[1].classList.add('active');
+                currentQuiz = twQuestions;
+                elements.title.innerText = "Tailwheel & UPRT Guide";
+            }
+            
+            // Reset Exam
+            resetExam();
+        }
+
+        function resetExam() {
+            currentQ = 0;
+            score = 0;
+            missedQuestions = [];
+            isAnswered = false;
+            timeRemaining = 3600;
+            clearInterval(timerInterval);
+            
+            elements.resultsUI.style.display = 'none';
+            elements.quizUI.style.display = 'block';
+            
+            shuffleArray(currentQuiz);
+            loadQuestion();
+        }
+
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+
         function startTimer() {
+            clearInterval(timerInterval); // clear any existing
             timerInterval = setInterval(() => {
                 timeRemaining--;
                 let minutes = Math.floor(timeRemaining / 60);
@@ -657,23 +832,22 @@
         function forceEndExam() {
             elements.endTitle.innerText = "Time's Up!";
             elements.endTitle.style.color = "var(--danger)";
-            
-            for(let i = currentQ; i < quizData.length; i++) {
-                missedQuestions.push(quizData[i]);
+            for(let i = currentQ; i < currentQuiz.length; i++) {
+                missedQuestions.push(currentQuiz[i]);
             }
             showResults();
         }
 
         function updateProgress() {
-            elements.qCounter.innerText = `Q ${currentQ + 1}/${quizData.length}`;
-            elements.pBar.style.width = `${((currentQ) / quizData.length) * 100}%`;
+            elements.qCounter.innerText = `Q ${currentQ + 1}/${currentQuiz.length}`;
+            elements.pBar.style.width = `${((currentQ) / currentQuiz.length) * 100}%`;
             elements.scoreVal.innerText = score;
         }
 
         function loadQuestion() {
             isAnswered = false;
             selectedAnswer = null;
-            const q = quizData[currentQ];
+            const q = currentQuiz[currentQ];
             
             updateProgress();
             elements.qText.innerText = q.q;
@@ -693,18 +867,16 @@
                 elements.optionsContainer.appendChild(div);
             });
 
-            if (currentQ === 0 && !timerInterval) {
+            if (currentQ === 0) {
                 startTimer();
             }
         }
 
         function selectOption(optText, element) {
             if (isAnswered) return; 
-            
             selectedAnswer = optText;
             Array.from(elements.optionsContainer.children).forEach(child => child.classList.remove('selected'));
             element.classList.add('selected');
-            
             elements.actionBtn.disabled = false;
             elements.actionBtn.innerText = "Submit Answer";
         }
@@ -719,7 +891,7 @@
 
         function checkAnswer() {
             isAnswered = true;
-            const q = quizData[currentQ];
+            const q = currentQuiz[currentQ];
             const options = elements.optionsContainer.children;
             
             elements.feedback.style.display = 'block';
@@ -747,12 +919,12 @@
             }
 
             elements.fbText.innerText = q.explanation;
-            elements.actionBtn.innerText = currentQ === quizData.length - 1 ? "View Results" : "Next Question →";
+            elements.actionBtn.innerText = currentQ === currentQuiz.length - 1 ? "View Results" : "Next Question →";
         }
 
         function nextQuestion() {
             currentQ++;
-            if (currentQ < quizData.length) {
+            if (currentQ < currentQuiz.length) {
                 loadQuestion();
             } else {
                 showResults();
@@ -764,11 +936,14 @@
             elements.quizUI.style.display = 'none';
             elements.resultsUI.style.display = 'block';
             
-            const percentage = Math.round((score / quizData.length) * 100);
-            elements.finalScore.innerText = `${score} / ${quizData.length} (${percentage}%)`;
+            const percentage = Math.round((score / currentQuiz.length) * 100);
+            elements.finalScore.innerText = `${score} / ${currentQuiz.length} (${percentage}%)`;
+            
+            elements.reviewUl.innerHTML = ""; // Clear old review list
 
             if (missedQuestions.length === 0) {
-                elements.missedDiv.innerHTML = "<h3 style='color: var(--success);'>Flawless!</h3><p>You have an excellent grasp of VFR regulations.</p>";
+                elements.reviewUl.innerHTML = "<h3 style='color: var(--success);'>Flawless!</h3><p>Excellent work.</p>";
+                elements.printBtn.style.display = 'none';
             } else {
                 elements.printBtn.style.display = 'block'; 
                 missedQuestions.forEach(q => {
@@ -779,7 +954,8 @@
             }
         }
 
-        shuffleArray(quizData);
+        // Initialize with default PPL quiz
+        shuffleArray(currentQuiz);
         loadQuestion();
     </script>
 </body>
