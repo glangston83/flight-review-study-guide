@@ -115,7 +115,7 @@
             width: 100px;
             overflow: hidden;
             margin: 0 10px;
-            display: none; /* Hidden on very small screens, shown via media query */
+            display: none; 
         }
         @media (min-width: 400px) { .progress-track { display: block; } }
 
@@ -274,7 +274,7 @@
     </div>
 
     <script>
-        // --- QUESTION BANK 1: PRIVATE PILOT ---
+        // --- QUESTION BANK 1: PRIVATE PILOT (Expanded) ---
         const pplQuestions = [
             {
                 q: "To act as Pilot in Command, what specific items must you have in your physical possession or readily accessible in the aircraft?",
@@ -625,10 +625,45 @@
                 answer: "The spontaneous, explosive ignition of the fuel/air mixture inside the cylinders",
                 explanation: "Detonation is an explosive, uncontrolled ignition of fuel, often caused by using a lower fuel grade than required or excessively high engine temperatures.",
                 ref: "FAA-H-8083-25"
+            },
+            {
+                q: "What causes the left-turning tendency known as P-factor?",
+                options: ["The gyroscopic precession of the spinning propeller", "The descending blade of the propeller taking a larger 'bite' of air than the ascending blade at high angles of attack", "The corkscrewing slipstream of air striking the left side of the vertical stabilizer"],
+                answer: "The descending blade of the propeller taking a larger 'bite' of air than the ascending blade at high angles of attack",
+                explanation: "P-factor (asymmetric thrust) occurs at high angles of attack because the descending blade has a higher angle of attack relative to the relative wind, creating more thrust on the right side of the propeller.",
+                ref: "FAA-H-8083-25"
+            },
+            {
+                q: "What must a pilot do before entering Class D airspace?",
+                options: ["Obtain an explicit ATC clearance (e.g., 'Cleared to enter')", "Establish two-way radio communications with the control tower", "Squawk a discrete transponder code provided by ATC"],
+                answer: "Establish two-way radio communications with the control tower",
+                explanation: "Unlike Class B airspace which requires a specific clearance, entering Class D only requires two-way radio comms to be established (the controller responds with your callsign).",
+                ref: "14 CFR 91.129"
+            },
+            {
+                q: "What does an alternating white and green rotating airport beacon indicate at night?",
+                options: ["A civilian land airport", "A military airport", "A water airport"],
+                answer: "A civilian land airport",
+                explanation: "Civilian land airports use alternating white and green flashes. Military airports use two white flashes followed by one green flash.",
+                ref: "AIM 2-1-9"
+            },
+            {
+                q: "During the preflight, you discover the aircraft's altitude indicator is inoperative. Who is responsible for determining if the aircraft is safe for flight?",
+                options: ["An FAA-certified A&P mechanic", "The aircraft owner or operator", "The Pilot in Command"],
+                answer: "The Pilot in Command",
+                explanation: "While the owner is responsible for maintaining the aircraft, the Pilot in Command is ultimately responsible for determining if the aircraft is in condition for safe flight prior to departure.",
+                ref: "14 CFR 91.7"
+            },
+            {
+                q: "What is a characteristic of a cold front?",
+                options: ["A steady, long-lasting light rain over a large area", "Towering cumulus or cumulonimbus clouds, heavy rain, and poor visibility", "Widespread stratus clouds and smooth air"],
+                answer: "Towering cumulus or cumulonimbus clouds, heavy rain, and poor visibility",
+                explanation: "Cold fronts force warm, moist air up rapidly, creating unstable conditions, thunderstorms, and heavy precipitation.",
+                ref: "AC 00-6B"
             }
         ];
 
-        // --- QUESTION BANK 2: TAILWHEEL & UPRT ---
+        // --- QUESTION BANK 2: TAILWHEEL & UPRT (Expanded) ---
         const twQuestions = [
             {
                 q: "What is the primary design characteristic of tailwheel airplanes that makes them less forgiving of pilot error on the ground?",
@@ -734,6 +769,48 @@
                 answer: "Airspeed Indicator",
                 explanation: "In a spin, airspeed is low (stalled). In a spiral, airspeed is increasing rapidly.",
                 ref: "CFI Spin Training"
+            },
+            {
+                q: "How does the primary objective of Upset Prevention and Recovery Training (UPRT) differ from Aerobatic training?",
+                options: ["Aerobatics focuses on safe recovery from upsets, while UPRT focuses on continuous loops", "Aerobatics focuses on precision maneuvering capability, while UPRT focuses on safe, effective recovery from aircraft upsets", "There is no difference; both focus on precision maneuvering"],
+                answer: "Aerobatics focuses on precision maneuvering capability, while UPRT focuses on safe, effective recovery from aircraft upsets",
+                explanation: "The primary objective of Aerobatics is precision maneuvering capability, whereas UPRT's primary objective is safe, effective recovery from aircraft upsets.",
+                ref: "Tailwheel Syllabus: Aerobatics vs. UPRT Flight Training Methods"
+            },
+            {
+                q: "What physical sensations should a pilot expect and be prepared for during initial UPRT?",
+                options: ["A complete lack of G-forces during all maneuvers", "Being upside down, experiencing various G-forces, and potentially feeling sick", "Only positive G-forces similar to a steep turn"],
+                answer: "Being upside down, experiencing various G-forces, and potentially feeling sick",
+                explanation: "UPRT means you will be upside down, experience various G forces, and at first, you will feel sick.",
+                ref: "UPRT Expectations"
+            },
+            {
+                q: "According to the UPRT curriculum, what is a general rule for pilots regarding visual cues and instrument indications?",
+                options: ["Always trust your physical senses over the instruments", "Any time visual cues or instrument indications differ from basic flight maneuver expectations, the pilot should assume an upset and cross-check", "Ignore the instruments if the visual horizon is obscured"],
+                answer: "Any time visual cues or instrument indications differ from basic flight maneuver expectations, the pilot should assume an upset and cross-check",
+                explanation: "Any time visual cues or instrument indications differ from basic flight maneuver expectations, the pilot should assume an upset and cross-check to confirm the attitude, instrument error or instrument malfunction.",
+                ref: "UPRT General Rules"
+            },
+            {
+                q: "When an inexperienced pilot encounters an unexpected abnormal flight attitude, how do they typically react?",
+                options: ["With intelligent and deliberate control inputs", "By immediately consulting the autopilot", "With instinctive and abrupt muscular effort, which can be hazardous"],
+                answer: "With instinctive and abrupt muscular effort, which can be hazardous",
+                explanation: "The reaction of an inexperienced or inadequately trained pilot to an unexpected abnormal flight attitude is usually instinctive rather than intelligent and deliberate. Such a pilot often reacts with abrupt muscular effort.",
+                ref: "UPRT Introduction"
+            },
+            {
+                q: "What is listed as a common mistake during UPRT (Lesson 1)?",
+                options: ["Using the rudder too aggressively", "Overloading the airplane, incorrect control inputs, and delay in taking action", "Failing to retract the flaps"],
+                answer: "Overloading the airplane, incorrect control inputs, and delay in taking action",
+                explanation: "Common mistakes for UPRT 1 include overloading the airplane, incorrect control inputs, and a delay in taking action.",
+                ref: "UPRT Lesson 1 Debrief"
+            },
+            {
+                q: "What is the primary prerequisite expectation before a student begins the tailwheel endorsement training?",
+                options: ["The student must have 100 hours of tailwheel simulator time", "The student must be working toward their solo", "The student already knows how to fly (no pre-solo or non-PPL pilots)"],
+                answer: "The student already knows how to fly (no pre-solo or non-PPL pilots)",
+                explanation: "The expectation with this endorsement is you already know how to fly. We are unable to endorse pre-solo or non-PPL pilots.",
+                ref: "Tailwheel Endorsement Expectations"
             }
         ];
 
