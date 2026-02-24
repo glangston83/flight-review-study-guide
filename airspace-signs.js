@@ -19,8 +19,8 @@ const visualQuestions = [
     {
         q: "Refer to the figure. What does this airport sign indicate?",
         image: "images/location-sign.png",
-        options: ["You are approaching taxiway Alpha", "You are currently located on taxiway Alpha", "Taxiway Alpha is closed"],
-        answer: "You are currently located on taxiway Alpha",
+        options: ["You are approaching taxiway Bravo", "You are currently located on taxiway Bravo", "Taxiway Bravo is closed"],
+        answer: "You are currently located on taxiway Bravo",
         explanation: "A black square background with a yellow letter is a Location Sign. The phrase to remember is: 'Black square, you're there.'",
         ref: "AIM 2-3-9"
     },
