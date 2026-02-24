@@ -25,22 +25,6 @@ const visualQuestions = [
         ref: "AIM 2-3-9"
     },
     {
-        q: "Refer to the figure. What kind of airspace does this solid magenta line indicate?",
-        image: "images/class-c-magenta.png",
-        options: ["Class B airspace", "Class C airspace", "Class D airspace"],
-        answer: "Class C airspace",
-        explanation: "A solid magenta line on a VFR Sectional indicates Class C airspace. A solid blue line is Class B, and a dashed blue line is Class D.",
-        ref: "VFR Sectional Legend"
-    },
-    {
-        q: "Refer to the figure. What is the meaning of the dashed magenta line surrounding this airport?",
-        image: "images/class-e-surface.png",
-        options: ["Class E airspace starting at the surface", "Class E airspace starting at 700 feet AGL", "A National Security Area"],
-        answer: "Class E airspace starting at the surface",
-        explanation: "A dashed magenta line indicates Class E airspace that extends from the surface upward to the overlying airspace. You must have 3 SM visibility and standard cloud clearances to operate VFR here.",
-        ref: "VFR Sectional Legend"
-    },
-    {
         q: "Refer to the figure. What does this airport sign mean?",
         image: "images/ils-critical.png",
         options: ["Instrument Landing System critical area holding position", "ILS frequency change required", "Military staging area"],
