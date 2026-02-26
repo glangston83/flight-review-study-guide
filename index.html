@@ -285,6 +285,7 @@
     <script src="ppl.js"></script>
     <script src="tw.js"></script>
     <script src="airspace-signs.js"></script>
+    <script src="adm-scenarios.js"></script> ```
 
     <script>
         let currentQuiz = pplQuestions;
@@ -332,6 +333,10 @@
                 elements.modeBtns[2].classList.add('active');
                 currentQuiz = visualQuestions;
                 elements.title.innerText = "Markings & Airspace";
+            } else if (mode === 'adm') {
+                elements.modeBtns[3].classList.add('active');
+                currentQuiz = admQuestions;
+                elements.title.innerText = "ADM & Scenarios";
             }
             resetExam();
         }
