@@ -216,6 +216,7 @@
                 <button class="mode-btn" onclick="switchMode('tw')">Tailwheel & UPRT</button>
                 <button class="mode-btn" onclick="switchMode('visual')">Markings & Airspace</button>
                 <button class="mode-btn" onclick="switchMode('adm')">ADM & Scenarios</button>
+                <button class="mode-btn" onclick="switchMode('acronyms')">Acronyms</button>
             </div>
         </div>
 
@@ -286,7 +287,8 @@
     <script src="ppl.js"></script>
     <script src="tw.js"></script>
     <script src="airspace-signs.js"></script>
-    <script src="adm-scenarios.js"></script> ```
+    <script src="adm-scenarios.js"></script>
+    <script src="acronyms.js"></script>
 
     <script>
         let currentQuiz = pplQuestions;
@@ -338,6 +340,10 @@
                 elements.modeBtns[3].classList.add('active');
                 currentQuiz = admQuestions;
                 elements.title.innerText = "ADM & Scenarios";
+            } else if (mode === 'acronyms') {
+                elements.modeBtns[3].classList.add('active');
+                currentQuiz = admQuestions;
+                elements.title.innerText = "Acronyms";
             }
             resetExam();
         }
